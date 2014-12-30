@@ -7,6 +7,7 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
@@ -14,7 +15,22 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <button id="updateButton">Fetch updates</button>
+      <!-- <input id="message" type="text" name="input" value=""> -->
+      <!-- <button id="submit">Submit</button> -->
+      <form  id="send" >
+            <input type="text" name="message" id="message">
+            <input type="submit" name="submit" class="submit">
+      </form>
+      <!-- <script>
+        window.app.init();
+      </script> -->
       <!-- Your HTML goes here! -->
+      <div id="rooms">
+        <select id="roomSelect"></select>
+      </div>
+
+      <div id="chats"></div>
     </div>
   </body>
 </html>
