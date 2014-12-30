@@ -1,33 +1,39 @@
 // YOUR CODE HERE:
-var clearDom = function () {
-
-};
-
 $(document).ready(function(){
   $("#updateButton").on("click", function(){
 
     app.fetch();
   });
-  $('#send .submit').on('click', function(e){
-    // thisInstance.handleSubmit($("#message").val());
+  $('#send').on('submit', function(e){
+    //var getUser = function(){};
+
     e.preventDefault();
-    app.handleSubmit("hello");
+    var msgObj = {
+      "text": $("#message").val(),
+      "username": window.currentUser,
+      "roomname": $('#roomSelect option:selected').val()
+    };
+    console.log(msgObj);
+    app.handleSubmit(msgObj);
+
   });
 
-  // $("#submit").on('click', function(){
-
-  //   var msg = $('#message').val();
-  //   app.send(msg);
-  // });
-
-  $(".username").on("click", function(){
-    thisInstance.addFriend($(this).text());
+  $('#roomSelect').change(function(){
+    var room = $('#roomSelect option:selected').val();
+    $('.message:not(.' + room +')').css('display', 'none');
+    $("."+room).css("display", "block");
   });
+
 });
 
 window.app = {
+  rooms: {},
   init: function(){
     this.fetch();
+
+    $(".username").on("click", function(){
+    app.addFriend($(this).text());
+  });
   },
   send: function(message){
     $.ajax({
@@ -37,8 +43,7 @@ window.app = {
       data: JSON.stringify(message),
       contentType: 'application/json',
       success: function (data) {
-        console.log('chatterbox: Message sent' + data);
-        //this.results.push(message);
+
       },
       error: function (data) {
         // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -51,7 +56,7 @@ window.app = {
     var thisInstance = this;
     $.ajax({
     // always use this url
-      // url: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt&limit=100',
+      url: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt&limit=100',
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
@@ -77,31 +82,39 @@ window.app = {
 
   addMessage: function(message){
     var msgDiv = $("<div/>", {
-      class: "message"
+      class: "message "+ _.escape(message.roomname)
     });
     var username = $("<div/>", {
       class: "username",
-      text: message.username
+      text: _.escape(message.username)
     });
     var userTextDiv = $("<div/>", {
       class: "userText",
-      text: message.text
+      text: _.escape(message.text)
     });
     msgDiv.append(username);
     msgDiv.append(userTextDiv);
     $('#chats').append(msgDiv);
+    app.addRoom(message.roomname);
   },
 
   addRoom: function(roomName){
-    $("#roomSelect").append('<option value="'+roomName+'">'+roomName+'</option>');
-
+    var clean =_.escape(roomName);
+    //if room doesn't exist
+    if (!app.rooms.hasOwnProperty(clean)){
+      //add it to the list
+      $("#roomSelect").append('<option value="'+clean+'">'+clean+'</option>');
+      app.rooms[clean] = true;
+    }
   },
 
   addFriend: function(userName){
+    console.log('clicked on username');
 
   },
 
   handleSubmit: function(message){
-    console.log("handling submit!")
+    console.log("handling submit!");
+    app.send(message);
   }
 };
