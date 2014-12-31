@@ -1,19 +1,43 @@
 // YOUR CODE HERE:
+//
+//
+var Message = Backbone.Model.extend({
+
+});
+
+var Messages = Backbone.Collection.extend({
+
+});
+
+var MessageView = Backbone.View.extend({
+
+});
+
+var MessagesView = Backbone.View.extend({
+
+});
+
+
+
+
+
+//
+//
+//
 $(document).ready(function(){
   $("#updateButton").on("click", function(){
 
     app.fetch();
   });
   $('#send').on('submit', function(e){
-    //var getUser = function(){};
 
     e.preventDefault();
     var msgObj = {
       "text": $("#message").val(),
-      "username": window.currentUser,
+      "username": window.location.search.substr(10),
       "roomname": $('#roomSelect option:selected').val()
     };
-    console.log(msgObj);
+
     app.handleSubmit(msgObj);
 
   });
