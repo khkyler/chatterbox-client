@@ -1,21 +1,21 @@
 // YOUR CODE HERE:
 //
 //
-var Message = Backbone.Model.extend({
+// var Message = Backbone.Model.extend({
 
-});
+// });
 
-var Messages = Backbone.Collection.extend({
+// var Messages = Backbone.Collection.extend({
 
-});
+// });
 
-var MessageView = Backbone.View.extend({
+// var MessageView = Backbone.View.extend({
 
-});
+// });
 
-var MessagesView = Backbone.View.extend({
+// var MessagesView = Backbone.View.extend({
 
-});
+// });
 
 
 
@@ -62,7 +62,7 @@ window.app = {
   send: function(message){
     $.ajax({
     // always use this url
-      url: 'https://api.parse.com/1/classes/chatterbox',
+      url: 'http://localhost:3000',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
@@ -80,7 +80,7 @@ window.app = {
     var thisInstance = this;
     $.ajax({
     // always use this url
-      url: 'https://api.parse.com/1/classes/chatterbox?order=-createdAt&limit=100',
+      url: 'http://localhost:3000',
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
