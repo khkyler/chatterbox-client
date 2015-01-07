@@ -1,45 +1,17 @@
-// YOUR CODE HERE:
-//
-//
-// var Message = Backbone.Model.extend({
 
-// });
-
-// var Messages = Backbone.Collection.extend({
-
-// });
-
-// var MessageView = Backbone.View.extend({
-
-// });
-
-// var MessagesView = Backbone.View.extend({
-
-// });
-
-
-
-
-
-//
-//
-//
 $(document).ready(function(){
   $("#updateButton").on("click", function(){
-
     app.fetch();
   });
-  $('#send').on('submit', function(e){
 
+  $('#send').on('submit', function(e){
     e.preventDefault();
     var msgObj = {
       "text": $("#message").val(),
       "username": window.location.search.substr(10),
       "roomname": $('#roomSelect option:selected').val()
     };
-
     app.handleSubmit(msgObj);
-
   });
 
   $('#roomSelect').change(function(){
@@ -47,28 +19,24 @@ $(document).ready(function(){
     $('.message:not(.' + room +')').css('display', 'none');
     $("."+room).css("display", "block");
   });
-
 });
 
 window.app = {
   rooms: {},
   init: function(){
     this.fetch();
-
     $(".username").on("click", function(){
-    app.addFriend($(this).text());
-  });
+      app.addFriend($(this).text());
+    });
   },
   send: function(message){
     $.ajax({
     // always use this url
-      url: 'http://localhost:3000',
+      url: 'http://127.0.0.1:3000/classes/messages/',
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
-      success: function (data) {
-
-      },
+      success: function (data) {},
       error: function (data) {
         // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
         console.error('chatterbox: Failed to send message');
@@ -80,18 +48,18 @@ window.app = {
     var thisInstance = this;
     $.ajax({
     // always use this url
-      url: 'http://localhost:3000',
+      url: 'http://127.0.0.1:3000/classes/messages/',
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
+        var response = data;
+        console.log(data);
         //data is an object with attr results, which is an array
-        //console.log('chatterbox: Message received' + data);
         thisInstance.clearMessages();
-        for (var i=0; i < data.results.length; i++){
-          var obj = data.results[i];
+        for (var i=0; i < response.results.length; i++){
+          var obj = response.results[i];
           thisInstance.addMessage(obj);
         }
-
       },
       error: function (data) {
         // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -118,7 +86,7 @@ window.app = {
     });
     msgDiv.append(username);
     msgDiv.append(userTextDiv);
-    $('#chats').append(msgDiv);
+    $('#chats').prepend(msgDiv);
     app.addRoom(message.roomname);
   },
 
